@@ -3,10 +3,12 @@ from fastapi.responses import JSONResponse
 import redis
 import os, time
 
+
 REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379/0")
 r = redis.Redis.from_url(REDIS_URL, decode_responses=True)
 
 app = FastAPI(title="Redis Key-Value Demo")
+
 
 @app.get("/")
 def home(request: Request):
@@ -21,8 +23,10 @@ def home(request: Request):
         "last_ip": r.get("last_ip"),
     })
 
+
 @app.get("/stats")
 def stats():
     """Afficher les dernières visites"""
     recent = r.lrange("events:visits", 0, 9)
     return {"recent_visits": recent}
+
